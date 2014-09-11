@@ -3,7 +3,7 @@ var express = require('express'),
   bodyParser = require('body-parser'),
 	filmService = require('./filmService');
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public/app'));
 app.use(bodyParser.json());
 
 app.get('/api/films', function (req, res) {
@@ -31,12 +31,18 @@ app.put('/api/films/:id', function (req, res) {
 	res.end();
 });
 
+app.post('/api/films', function(req, res) {
+    filmService.addFilm(req.body);
+    res.status(200);
+    res.end();
+});
+
 app.get('/api/filmdetails/:id', function (req, res) {
 	res.send(filmService.getFilm(req.params.id));
 });
 
 app.get('/', function(req, res){
-	var text = [
+	/*var text = [
 		'<b>localhost:3000/api/films</b>',
 		'returns the list of films available',
 		'<br />',
@@ -48,8 +54,8 @@ app.get('/', function(req, res){
 		'<br />',
 		'<b>localhost:3000/app</b>',
 		'this is the root of your web app'];
-	res.send(text.join('<br />'));
-
+	res.send(text.join('<br />'));*/
+    res.sendFile(__dirname + '/public/app/index.html');
 });
 
 app.listen(3000);
