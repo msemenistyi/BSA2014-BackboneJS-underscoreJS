@@ -7,21 +7,21 @@ define([
 ], function($, _, Backbone, FilmsListView, FilmDetailsView) {
     var AppRouter = Backbone.Router.extend({
         routes: {
-            "list":        "showFilmsList",
-            "details/:id": "showFilmDetails"
+            "details/:id": "showFilmDetails",
+            "*actions":    "defaultRoute"
         }
     });
 
     var initialize = function(config) {
         var router = new AppRouter;
 
-        router.on("route:showFilmsList", function() {
+        /*router.on("route:showFilmsList", function() {
             var filmsListView = new FilmsListView({
                 collectionUrl: config.apiEndpoint + "films"
             });
 
             filmsListView.render();
-        });
+        });*/
 
         router.on("route:showFilmDetails", function(id) {
             var filmDetailsView = new FilmDetailsView({
@@ -31,9 +31,15 @@ define([
             filmDetailsView.render();
         });
 
-        Backbone.history.start();
+        router.on("route:defaultRoute", function() {
+            var filmsListView = new FilmsListView({
+                collectionUrl: config.apiEndpoint + "films"
+            });
 
-        router.navigate(config.defaultClientRoute, true);
+            filmsListView.render();
+        });
+
+        Backbone.history.start();
     };
 
     return {

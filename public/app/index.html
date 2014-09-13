@@ -30,18 +30,26 @@
         <div class="row">
             <div class="col-lg-2"></div>
             <div class="col-lg-8">
-                <div class="list-group" id="films-list">
-                    <% _.each(films, function(film) { %>
-                        <a href="#details/<%= film.id %>" class="list-group-item">
-                            <span class="badge">Delete</span>
-                            <span class="badge">Rename</span>
-                            <span class="film-name-label"><%= film.name %></span>
-                            <span class="film-year-label"><%= film.year %></span>
-                        </a>
-                    <% });%>
+                <div class="row" id="films-list">
+                    <!--Render film items here-->
                 </div>
             </div>
             <div class="col-lg-2"></div>
+        </div>
+    </script>
+
+    <script type="text/template" id="film-view-tpl">
+        <div>
+            <div class="col-md-8">
+                <div class="well well-sm film-item" id="film-item-<%= id %>">
+                    <span class="film-name-label"><%= name %></span>
+                    <span class="film-year-label pull-right"><%= year %></span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-primary rename-button" data-id="<%= id %>">Rename</button>
+                <button class="btn btn-info delete-button" data-id="<%= id %>">Delete</button>
+            </div>
         </div>
     </script>
 

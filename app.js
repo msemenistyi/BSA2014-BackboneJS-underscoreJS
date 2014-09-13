@@ -32,7 +32,8 @@ app.put('/api/films/:id', function (req, res) {
 });
 
 app.post('/api/films', function(req, res) {
-    filmService.addFilm(req.body);
+    var film = filmService.addFilm(req.body);
+    res.send(film);
     res.status(200);
     res.end();
 });
@@ -42,20 +43,23 @@ app.get('/api/filmdetails/:id', function (req, res) {
 });
 
 app.get('/', function(req, res){
-	/*var text = [
-		'<b>localhost:3000/api/films</b>',
-		'returns the list of films available',
-		'<br />',
-		'<b>localhost:3000/api/films/%id%</b>',
-		'where %id% is id of the film from the list',
-		'<br />',
-		'<b>localhost:3000/api/filmdetails/%id%</b>',
-		'where <b>%filmname%</b> is a name of the film from the filmlist',
-		'<br />',
-		'<b>localhost:3000/app</b>',
-		'this is the root of your web app'];
-	res.send(text.join('<br />'));*/
     res.sendFile(__dirname + '/public/app/index.html');
+});
+
+app.get('/help', function(req, res) {
+    var text = [
+     '<b>localhost:3000/api/films</b>',
+     'returns the list of films available',
+     '<br />',
+     '<b>localhost:3000/api/films/%id%</b>',
+     'where %id% is id of the film from the list',
+     '<br />',
+     '<b>localhost:3000/api/filmdetails/%id%</b>',
+     'where <b>%filmname%</b> is a name of the film from the filmlist',
+     '<br />',
+     '<b>localhost:3000/app</b>',
+     'this is the root of your web app'];
+     res.send(text.join('<br />'));
 });
 
 app.listen(3000);

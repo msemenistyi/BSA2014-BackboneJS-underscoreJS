@@ -29,6 +29,8 @@ var FilmService = function(){
 		var ids = _.pluck(this.FilmList, 'id');
 		item['id'] = _.max(ids) + 1;
 		this.FilmList.push(film);
+
+        return film;
 	};
 
 	this.FilmList = [
