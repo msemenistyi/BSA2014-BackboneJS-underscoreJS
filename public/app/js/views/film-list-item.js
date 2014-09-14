@@ -1,10 +1,11 @@
 define([
     'jquery',
     'underscore',
-    'backbone'
-], function($, _, Backbone) {
+    'backbone',
+    'text!templates/film-view.html'
+], function($, _, Backbone, template) {
     var FilmView = Backbone.View.extend({
-        template: _.template($("#film-view-tpl").html()),
+        template: _.template(template),
         events: {
              "click .delete-button":       "deleteFilm",
              "click .rename-button":       "activateEditor",

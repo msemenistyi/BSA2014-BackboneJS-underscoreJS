@@ -1,6 +1,11 @@
-define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+    'text!templates/no-film-view.html'
+], function($, _, Backbone, template) {
     var FilmsEmptyListView = Backbone.View.extend({
-        template: _.template($("#no-film-view-tpl").html()),
+        template: _.template(template),
         className: "row",
 
         render: function() {

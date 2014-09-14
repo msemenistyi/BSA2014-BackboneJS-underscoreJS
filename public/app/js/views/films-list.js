@@ -4,13 +4,21 @@ define([
     'backbone',
     'collections/films',
     'views/film-list-item',
-    'views/films-empty-list'
-], function($, _, Backbone, FilmsCollection, FilmView, FilmsEmptyListView) {
+    'views/films-empty-list',
+    'text!templates/list-view.html'
+], function($, _, Backbone, FilmsCollection, FilmView, FilmsEmptyListView, template) {
     var FilmsListView = Backbone.View.extend({
-        template: _.template($("#films-list-view-tpl").html()),
+        template: _.template(template),
 
         events: {
             "click #add-film-button": "addFilm"
+        },
+
+        validationRules: {
+            year: {
+                min: 1895, // first Lumier brothers' film
+                max: new Date().getFullYear()
+            }
         },
 
         ui: {
@@ -81,7 +89,7 @@ define([
 
         validateNewFilm: function() {
             var name = this.$el.find(this.ui.filmName).val(),
-                year = this.$el.find(this.ui.filmYear).val();
+                year = parseInt(this.$el.find(this.ui.filmYear).val(), 10);
 
             var result = {
                 name: name,
@@ -93,8 +101,14 @@ define([
                 result.errors.push("Film's name should be not empty");
             }
 
-            if (!(/\d{4}/.test(year))) {
-                result.errors.push("Film's year should be 4 digits");
+            if (!(year >= this.validationRules.year.min
+                && year <= this.validationRules.year.max)) {
+                var yearErrorMessage = "Film's year should be in range (" +
+                    this.validationRules.year.min +
+                    ".." +
+                    this.validationRules.year.max +
+                    ")";
+                result.errors.push(yearErrorMessage);
             }
 
             return result;

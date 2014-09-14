@@ -2,11 +2,12 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/film'
-], function($, _, Backbone, FilmModel) {
+    'models/film',
+    'text!templates/film-detailed-view.html'
+], function($, _, Backbone, FilmModel, template) {
     var FilmDetailsView = Backbone.View.extend({
         el:       $("#content"),
-        template: _.template($("#film-detailed-view-tpl").html()),
+        template: _.template(template),
 
         initialize: function(options) {
             this.model = new FilmModel();
