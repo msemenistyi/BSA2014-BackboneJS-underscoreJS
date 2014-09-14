@@ -63,4 +63,4 @@ app.get('/help', function(req, res) {
 });
 
 app.listen(3000);
-console.log('Server started on port 3000. Go to localhost:3000 for further instructions');
+console.log('Server started. Go localhost:3000 for further instructions');

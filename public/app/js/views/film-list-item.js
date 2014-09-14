@@ -6,13 +6,14 @@ define([
     var FilmView = Backbone.View.extend({
         template: _.template($("#film-view-tpl").html()),
         events: {
-             "click .delete-button":   "deleteFilm",
-             "click .rename-button":   "activateEditor",
-             "blur .film-name-label":  "deactivateEditor"
+             "click .delete-button":       "deleteFilm",
+             "click .rename-button":       "activateEditor",
+             "keypress .film-name-label":  "deactivateEditor"
         },
 
         ui: {
-            filmNameLabel: ".film-name-label"
+            filmNameLabel: ".film-name-label",
+            filmDetails:   ".film-details"
         },
 
         initialize: function(options) {
@@ -36,33 +37,36 @@ define([
         },
 
         activateEditor: function() {
-            var filmID = this.model.get("id");
-            var filmNameSpan = this.$el.find(this.ui.filmNameLabel);
-
-            var $input = $("<input>", {
-                val:     filmNameSpan.text(),
-                type:    "text",
-                id:      "film-item-" + filmID,
-                film_id: filmID
-            });
+            var filmID       = this.model.get("id"),
+                filmNameSpan = this.$el.find(this.ui.filmNameLabel),
+                $input       = $("<input>", {
+                    val:     filmNameSpan.text(),
+                    type:    "text",
+                    id:      "film-item-" + filmID,
+                    film_id: filmID
+                });
 
             $input.addClass("film-name-label");
             $(filmNameSpan).replaceWith($input);
             $input.select();
+            this.$el.find(this.ui.filmDetails).hide();
         },
 
-        deactivateEditor: function() {
-            var filmInput = this.$el.find(this.ui.filmNameLabel);
-            var filmName = filmInput.val();
+        deactivateEditor: function(e) {
+            if (e.charCode == 13) {
+                var filmInput = this.$el.find(this.ui.filmNameLabel),
+                    filmName  = filmInput.val(),
+                    $span = $("<span>", {
+                        text: filmInput.val()
+                    });
 
-            var $span = $("<span>", {
-                text: filmInput.val()
-            });
-            $span.addClass("film-name-label");
-            filmInput.replaceWith($span);
+                $span.addClass("film-name-label");
+                filmInput.replaceWith($span);
+                this.$el.find(this.ui.filmDetails).show();
 
-            if (this.model.get("name") != filmName) {
-                this.updateFilm(this.model, { name: filmName });
+                if (this.model.get("name") != filmName) {
+                    this.updateFilm(this.model, { name: filmName });
+                }
             }
         },
 

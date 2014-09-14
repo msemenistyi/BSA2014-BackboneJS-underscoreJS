@@ -14,10 +14,11 @@ define([
         },
 
         ui: {
-            filmsList:  "#films-list",
-            filmYear:   "#film-year-input",
-            filmName:   "#film-name-input",
-            alertBlock: ".alert"
+            contentContainer:  "#content",
+            filmsList:         "#films-list",
+            filmYear:          "#film-year-input",
+            filmName:          "#film-name-input",
+            alertBlock:        ".alert"
         },
 
         initialize: function(options) {
@@ -60,7 +61,7 @@ define([
             });
 
             // Fuck all the delegated zombies
-            $("#content").empty().append(this.$el);
+            $(this.ui.contentContainer).empty().append(this.$el);
         },
 
         addFilm: function() {

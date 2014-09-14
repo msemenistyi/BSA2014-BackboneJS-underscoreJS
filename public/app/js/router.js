@@ -24,9 +24,6 @@ define([
         });
 
         router.on("route:defaultRoute", function() {
-
-            console.log("Default route");
-
             var filmsListView = new FilmsListView({
                 collectionUrl: config.apiEndpoint + "films"
             });
