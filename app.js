@@ -1,34 +1,34 @@
-var express = require('express'),
-	app = express(),
-  bodyParser = require('body-parser'),
-	filmService = require('./filmService');
+var express     = require('express'),
+    app         = express(),
+    bodyParser  = require('body-parser'),
+    filmService = require('./filmService');
 
 app.use(express.static(__dirname + '/public/app'));
 app.use(bodyParser.json());
 
 app.get('/api/films', function (req, res) {
-	res.send(filmService.getFilmList());
+    res.send(filmService.getFilmList());
 });
 
 app.get('/api/films/:id', function (req, res) {
-	var film = filmService.getFilmList(req.params.id);
-	if (film){
-		res.send(film);
-	} else {
-		res.send('No film with id ' + req.params.id);
-	}
+    var film = filmService.getFilmList(req.params.id);
+    if (film) {
+        res.send(film);
+    } else {
+        res.send('No film with id ' + req.params.id);
+    }
 });
 
 app.delete('/api/films/:id', function (req, res) {
-	var film = filmService.deleteFilm(req.params.id);
-	res.end();
+    var film = filmService.deleteFilm(req.params.id);
+    res.end();
 });
 
 app.put('/api/films/:id', function (req, res) {
-	var film = filmService.addFilm(req.params.id);
-  filmService.addFilm(req.body);
-  res.status(200);
-	res.end();
+    var film = filmService.updateFilm(req.params.id, req.body);
+    res.send(film);
+    res.status(200);
+    res.end();
 });
 
 app.post('/api/films', function(req, res) {
@@ -39,10 +39,10 @@ app.post('/api/films', function(req, res) {
 });
 
 app.get('/api/filmdetails/:id', function (req, res) {
-	res.send(filmService.getFilm(req.params.id));
+    res.send(filmService.getFilm(req.params.id));
 });
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
     res.sendFile(__dirname + '/public/app/index.html');
 });
 

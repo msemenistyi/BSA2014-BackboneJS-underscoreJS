@@ -27,7 +27,7 @@ define([
         },
 
         renderEmptyFilms: function() {
-
+            //TODO: implement
         },
 
         render: function() {
@@ -88,56 +88,6 @@ define([
             this.$el.find("#film-name-input").val('');
             this.$el.find("#film-year-input").val('');
         }
-
-        /*confirmFilmRemoving: function(e) {
-            var filmID = $(e.target).data("id");
-            if (!confirm("Delete this film")) {
-                return false;
-            } else {
-                this.deleteFilm(filmID);
-            }
-        },
-
-        deleteFilm: function(id) {
-            var filmToDelete = _.findWhere(this.collection.models, {id: id});
-            filmToDelete.destroy();
-        },
-
-        activateEditor: function(e) {
-            var filmID = $(e.target).data("id");
-            var filmNameSpan = $("#film-item-" + filmID + " .film-name-label");
-
-            var $input = $("<input>", {
-                val:     filmNameSpan.text(),
-                type:    "text",
-                id:      "film-item-" + filmID,
-                film_id: filmID
-            });
-
-            $input.addClass("film-name-label");
-            $(filmNameSpan).replaceWith($input);
-            $input.on("blur", $.proxy(this.deactivateEditor, this));
-            $input.select();
-        },
-
-        deactivateEditor: function(e) {
-            var filmInput = $(e.target);
-            var filmID    = filmInput.attr("film_id");
-            var filmName  = filmInput.val();
-
-            var $span = $("<span>", {
-                text: filmInput.val()
-            });
-            $span.addClass("film-name-label");
-            filmInput.replaceWith($span);
-
-            this.updateFilm(Number(filmID), { name: filmName });
-        },
-
-        updateFilm: function(id, attributes) {
-            var filmToUpdate = _.findWhere(this.collection.models, {id: id});
-            filmToUpdate.save(attributes);
-        }*/
     });
 
     return FilmsListView;
