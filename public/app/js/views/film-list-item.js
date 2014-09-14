@@ -1,15 +1,18 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
-    'models/film'
-], function($, _, Backbone, FilmModel) {
+    'backbone'
+], function($, _, Backbone) {
     var FilmView = Backbone.View.extend({
         template: _.template($("#film-view-tpl").html()),
         events: {
              "click .delete-button":   "deleteFilm",
              "click .rename-button":   "activateEditor",
              "blur .film-name-label":  "deactivateEditor"
+        },
+
+        ui: {
+            filmNameLabel: ".film-name-label"
         },
 
         initialize: function(options) {
@@ -34,7 +37,7 @@ define([
 
         activateEditor: function() {
             var filmID = this.model.get("id");
-            var filmNameSpan = this.$el.find(".film-name-label");
+            var filmNameSpan = this.$el.find(this.ui.filmNameLabel);
 
             var $input = $("<input>", {
                 val:     filmNameSpan.text(),
@@ -49,7 +52,7 @@ define([
         },
 
         deactivateEditor: function() {
-            var filmInput = this.$el.find(".film-name-label");
+            var filmInput = this.$el.find(this.ui.filmNameLabel);
             var filmName = filmInput.val();
 
             var $span = $("<span>", {

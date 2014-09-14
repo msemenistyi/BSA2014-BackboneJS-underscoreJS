@@ -3,8 +3,9 @@ define([
     'underscore',
     'backbone',
     'collections/films',
-    'views/film-list-item'
-], function($, _, Backbone, FilmsCollection, FilmView) {
+    'views/film-list-item',
+    'views/films-empty-list'
+], function($, _, Backbone, FilmsCollection, FilmView, FilmsEmptyListView) {
     var FilmsListView = Backbone.View.extend({
         el:       $("#content"),
         template: _.template($("#films-list-view-tpl").html()),
@@ -13,21 +14,32 @@ define([
             "click #add-film-button": "addFilm"
         },
 
+        ui: {
+            filmsList:  "#films-list",
+            filmYear:   "#film-year-input",
+            filmName:   "#film-name-input",
+            alertBlock: ".alert"
+        },
+
         initialize: function(options) {
             this.collection = new FilmsCollection({
                 filmsUrl: options.collectionUrl
             });
 
             this.collection.on("add", this.renderFilm, this);
+            this.collection.on("remove", this.checkFilms, this);
         },
 
         renderFilm: function(film) {
+            this.$el.find(this.ui.alertBlock).parent().remove();
+
             var filmView = new FilmView({ model: film });
-            this.$el.find("#films-list").append(filmView.render().el);
+            this.$el.find(this.ui.filmsList).append(filmView.render().el);
         },
 
         renderEmptyFilms: function() {
-            //TODO: implement
+            var emptyFilmView = new FilmsEmptyListView;
+            this.$el.find(this.ui.filmsList).append(emptyFilmView.render().el);
         },
 
         render: function() {
@@ -44,7 +56,8 @@ define([
                             that.renderFilm(film);
                         });
                     }
-                }
+                },
+                reset: true
             });
         },
 
@@ -64,8 +77,8 @@ define([
         },
 
         validateNewFilm: function() {
-            var name = this.$el.find("#film-name-input").val(),
-                year = this.$el.find("#film-year-input").val();
+            var name = this.$el.find(this.ui.filmName).val(),
+                year = this.$el.find(this.ui.filmYear).val();
 
             var result = {
                 name: name,
@@ -85,8 +98,14 @@ define([
         },
 
         clearFilmInputs: function() {
-            this.$el.find("#film-name-input").val('');
-            this.$el.find("#film-year-input").val('');
+            this.$el.find(this.ui.filmName).val('');
+            this.$el.find(this.ui.filmYear).val('');
+        },
+
+        checkFilms: function() {
+            if (!this.collection.length) {
+                this.renderEmptyFilms();
+            }
         }
     });
 
