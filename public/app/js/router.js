@@ -15,14 +15,6 @@ define([
     var initialize = function(config) {
         var router = new AppRouter;
 
-        /*router.on("route:showFilmsList", function() {
-            var filmsListView = new FilmsListView({
-                collectionUrl: config.apiEndpoint + "films"
-            });
-
-            filmsListView.render();
-        });*/
-
         router.on("route:showFilmDetails", function(id) {
             var filmDetailsView = new FilmDetailsView({
                 detailsUrl: config.apiEndpoint + "filmdetails/" + id
@@ -32,6 +24,9 @@ define([
         });
 
         router.on("route:defaultRoute", function() {
+
+            console.log("Default route");
+
             var filmsListView = new FilmsListView({
                 collectionUrl: config.apiEndpoint + "films"
             });

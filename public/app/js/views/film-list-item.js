@@ -61,7 +61,9 @@ define([
             $span.addClass("film-name-label");
             filmInput.replaceWith($span);
 
-            this.updateFilm(this.model, { name: filmName });
+            if (this.model.get("name") != filmName) {
+                this.updateFilm(this.model, { name: filmName });
+            }
         },
 
         updateFilm: function(film, attributes) {

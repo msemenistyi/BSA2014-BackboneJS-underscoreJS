@@ -42,7 +42,10 @@
         <div class="col-md-8">
             <div class="well well-sm film-item" id="film-item-<%= id %>">
                 <span class="film-name-label"><%= name %></span>
-                <span class="film-year-label pull-right"><%= year %></span>
+                <span class="film-year-label"><%= year %></span>
+                <span class="film-details pull-right">
+                    <a href="#/details/<%= id %>" class="">Details</a>
+                </span>
             </div>
         </div>
         <div class="col-md-4">
@@ -63,7 +66,7 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="thumbnail well">
-                        <img src="<%= film.poster %>" alt="<%= film.name %>">
+                        <img src="<%= (film.poster) ? film.poster : 'http://www.the-crazy-cat.com/wp-content/uploads/2013/06/Adorable-Kitten1-200x300.jpg' %>" alt="<%= film.name %>">
                         <div class="caption">
                             <h2><%= film.name %></h2>
                             <p><h4><%= film.year %></h4></p>
