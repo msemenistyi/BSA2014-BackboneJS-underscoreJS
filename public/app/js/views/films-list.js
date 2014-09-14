@@ -7,7 +7,6 @@ define([
     'views/films-empty-list'
 ], function($, _, Backbone, FilmsCollection, FilmView, FilmsEmptyListView) {
     var FilmsListView = Backbone.View.extend({
-        el:       $("#content"),
         template: _.template($("#films-list-view-tpl").html()),
 
         events: {
@@ -59,6 +58,9 @@ define([
                 },
                 reset: true
             });
+
+            // Fuck all the delegated zombies
+            $("#content").empty().append(this.$el);
         },
 
         addFilm: function() {
