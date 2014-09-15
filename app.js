@@ -1,9 +1,10 @@
 var express     = require('express'),
     app         = express(),
     bodyParser  = require('body-parser'),
-    filmService = require('./filmService');
+    filmService = require('./filmService'),
+    env         = require('./environment');
 
-app.use(express.static(__dirname + '/public/app'));
+app.use(express.static(__dirname + env[env.current].staticPath));
 app.use(bodyParser.json());
 
 app.get('/api/films', function (req, res) {
@@ -43,7 +44,7 @@ app.get('/api/filmdetails/:id', function (req, res) {
 });
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/public/app/index.html');
+    res.sendFile(__dirname + env[env.current].staticPath + '/index.html');
 });
 
 app.get('/help', function(req, res) {
