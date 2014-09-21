@@ -4,10 +4,21 @@ require.config({
         underscore: 'libs/underscore',
         backbone:   'libs/backbone',
         text:       'libs/text',
-        marionette: 'libs/backbone.marionette.js'
+        marionette: 'libs/backbone.marionette'
     }
 });
 
-require(['app'], function(App) {
+require([
+    'app',
+    'backbone',
+    'router',
+    'controllers/film'
+], function(App, Backbone, Router, Controller) {
     App.start();
+
+    new Router({ controller : Controller });
+
+    Backbone.history.start();
+
+    console.log("App started");
 });
