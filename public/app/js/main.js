@@ -3,7 +3,8 @@ require.config({
         jquery:     'libs/jquery-2.1.1',
         underscore: 'libs/underscore',
         backbone:   'libs/backbone',
-        text:       'libs/text'
+        text:       'libs/text',
+        marionette: 'libs/backbone.marionette.js'
     }
 });
 
