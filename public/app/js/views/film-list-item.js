@@ -2,8 +2,9 @@ define([
     'jquery',
     'underscore',
     'marionette',
+    'behaviors/behaviors',
     'text!templates/film-view.html'
-], function($, _, Marionette, template) {
+], function($, _, Marionette, Behaviors, template) {
     var FilmView = Marionette.ItemView.extend({
         template: _.template(template),
 
@@ -11,13 +12,20 @@ define([
             deleteButton:  '.delete-button',
             renameButton:  '.rename-button',
             filmNameLabel: '.film-name-label',
-            filmDetails:   '.film-details'
+            filmDetails:   '.film-details',
+            filmItem:      '.film-item'
         },
 
         events: {
             'click @ui.deleteButton':     'deleteFilm',
             'click @ui.renameButton':     'activateEditor',
             'keypress @ui.filmNameLabel': 'deactivateEditor'
+        },
+
+        behaviors: {
+            Highlighter: {
+                behaviorClass: Behaviors.Highlighter
+            }
         },
 
         deleteFilm: function() {
