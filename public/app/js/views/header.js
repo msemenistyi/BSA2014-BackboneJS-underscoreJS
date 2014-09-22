@@ -1,7 +1,8 @@
 define([
+    'underscore',
     'marionette',
     'text!templates/header.html'
-], function(Marionette, template) {
+], function(_, Marionette, template) {
     var Header = Marionette.ItemView.extend({
         className: 'container',
         template: _.template(template)
