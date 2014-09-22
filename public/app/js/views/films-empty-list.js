@@ -1,17 +1,12 @@
 define([
-    'jquery',
     'underscore',
-    'backbone',
+    'marionette',
     'text!templates/no-film-view.html'
-], function($, _, Backbone, template) {
-    var FilmsEmptyListView = Backbone.View.extend({
+], function(_, Marionette, template) {
+    var FilmsEmptyListView = Marionette.ItemView.extend({
         template: _.template(template),
         className: "row",
-
-        render: function() {
-            this.$el.html(this.template());
-            return this;
-        }
+        tagName: "div"
     });
 
     return FilmsEmptyListView;

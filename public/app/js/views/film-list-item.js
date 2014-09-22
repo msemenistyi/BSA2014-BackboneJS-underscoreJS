@@ -1,31 +1,31 @@
 define([
     'jquery',
     'underscore',
-    'backbone',
+    'marionette',
+    'behaviors/behaviors',
     'text!templates/film-view.html'
-], function($, _, Backbone, template) {
-    var FilmView = Backbone.View.extend({
+], function($, _, Marionette, Behaviors, template) {
+    var FilmView = Marionette.ItemView.extend({
         template: _.template(template),
-        events: {
-             "click .delete-button":       "deleteFilm",
-             "click .rename-button":       "activateEditor",
-             "keypress .film-name-label":  "deactivateEditor"
-        },
 
         ui: {
-            filmNameLabel: ".film-name-label",
-            filmDetails:   ".film-details"
+            deleteButton:  '.delete-button',
+            renameButton:  '.rename-button',
+            filmNameLabel: '.film-name-label',
+            filmDetails:   '.film-details',
+            filmItem:      '.film-item'
         },
 
-        initialize: function(options) {
-            this.model = options.model;
-            this.model.on("destroy", this.remove, this);
-            this.model.on('change', this.render, this);
+        events: {
+            'click @ui.deleteButton':     'deleteFilm',
+            'click @ui.renameButton':     'activateEditor',
+            'keypress @ui.filmNameLabel': 'deactivateEditor'
         },
 
-        render: function() {
-            this.$el.html(this.template(this.model.toJSON()));
-            return this;
+        behaviors: {
+            Highlighter: {
+                behaviorClass: Behaviors.Highlighter
+            }
         },
 
         deleteFilm: function() {
@@ -39,7 +39,7 @@ define([
 
         activateEditor: function() {
             var filmID       = this.model.get("id"),
-                filmNameSpan = this.$el.find(this.ui.filmNameLabel),
+                filmNameSpan = this.ui.filmNameLabel,
                 $input       = $("<input>", {
                     val:     filmNameSpan.text(),
                     type:    "text",
@@ -50,12 +50,12 @@ define([
             $input.addClass("film-name-label");
             $(filmNameSpan).replaceWith($input);
             $input.select();
-            this.$el.find(this.ui.filmDetails).hide();
+            this.ui.filmDetails.hide();
         },
 
         deactivateEditor: function(e) {
             if (e.charCode == 13) {
-                var filmInput = this.$el.find(this.ui.filmNameLabel),
+                var filmInput = this.$el.find('.film-name-label'),
                     filmName  = filmInput.val(),
                     $span = $("<span>", {
                         text: filmInput.val()
@@ -63,7 +63,7 @@ define([
 
                 $span.addClass("film-name-label");
                 filmInput.replaceWith($span);
-                this.$el.find(this.ui.filmDetails).show();
+                this.ui.filmDetails.show();
 
                 if (this.model.get("name") != filmName) {
                     this.updateFilm(this.model, { name: filmName });
@@ -74,7 +74,6 @@ define([
         updateFilm: function(film, attributes) {
             film.save(attributes);
         }
-
     });
 
     return FilmView;

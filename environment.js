@@ -6,7 +6,7 @@ var environment = function() {
         prod: {
             staticPath: '/build'
         },
-        current: "prod"
+        current: "dev"
     }
 };
 
