@@ -4,7 +4,8 @@ require.config({
         underscore: 'libs/underscore',
         backbone:   'libs/backbone',
         text:       'libs/text',
-        marionette: 'libs/backbone.marionette'
+        marionette: 'libs/backbone.marionette',
+        fetchcache: 'libs/backbone.fetch-cache'
     }
 });
 
@@ -12,7 +13,8 @@ require([
     'app',
     'backbone',
     'router',
-    'controllers/film'
+    'controllers/film',
+    'fetchcache'
 ], function(App, Backbone, Router, Controller) {
     App.start();
 

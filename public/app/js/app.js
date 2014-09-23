@@ -38,7 +38,7 @@ define([
             app.details.show(new FilmDetailsView({ model: film }));
         });
 
-        film.fetch();
+        film.fetch({ cache: true });
     });
 
     return window.app = app;
