@@ -5,7 +5,9 @@ require.config({
         backbone:   'libs/backbone',
         text:       'libs/text',
         marionette: 'libs/backbone.marionette',
-        fetchcache: 'libs/backbone.fetch-cache'
+        fetchcache: 'libs/backbone.fetch-cache',
+        memento:    'libs/backbone.memento',
+        validation: 'libs/backbone-validation-amd'
     }
 });
 
