@@ -1,10 +1,11 @@
 define([
     'underscore',
     'marionette',
+    'validation',
     'views/film-list-item',
     'views/films-empty-list',
     'text!templates/film-manager.html'
-], function(_, Marionette, FilmView, FilmsEmptyListView, template) {
+], function(_, Marionette, BackboneValidation, FilmView, FilmsEmptyListView, template) {
     var FilmManager = Marionette.CompositeView.extend({
         template:           _.template(template),
         childView:          FilmView,
@@ -23,53 +24,29 @@ define([
             'click @ui.addFilmButton': 'addFilm'
         },
 
-        validationRules: {
-            year: {
-                min: 1895, // first Lumier brothers' film
-                max: new Date().getFullYear()
-            }
+        initialize: function() {
+            Backbone.Validation.bind(this);
         },
 
         addFilm: function() {
-            var filmData = this.validateNewFilm();
-            if (filmData.errors.length) {
-                alert(filmData.errors.join("\n"));
-                return;
+            this.model.set({
+                name: this.ui.filmName.val(),
+                year: this.ui.filmYear.val()
+            });
+
+            var result = this.model.validate();
+
+            if (result) {
+                alert(_.values(result).join("\n"));
+                return false;
             }
 
             this.collection.create({
-                name: filmData.name,
-                year: '(' + filmData.year + ')'
+                name: this.model.get("name"),
+                year: this.model.get("year")
             }, { wait: true });
 
             this.clearFilmInputs();
-        },
-
-        validateNewFilm: function() {
-            var name = this.ui.filmName.val(),
-                year = parseInt(this.ui.filmYear.val(), 10);
-
-            var result = {
-                name: name,
-                year: year,
-                errors: []
-            };
-
-            if (!name.length) {
-                result.errors.push("Film's name should be not empty");
-            }
-
-            if (!(year >= this.validationRules.year.min
-                && year <= this.validationRules.year.max)) {
-                var yearErrorMessage = "Film's year should be in range (" +
-                    this.validationRules.year.min +
-                    ".." +
-                    this.validationRules.year.max +
-                    ")";
-                result.errors.push(yearErrorMessage);
-            }
-
-            return result;
         },
 
         clearFilmInputs: function() {

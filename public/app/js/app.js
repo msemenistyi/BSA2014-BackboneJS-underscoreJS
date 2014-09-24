@@ -23,7 +23,10 @@ define([
 
     app.vent.on('films:show', function () {
         films.on('sync', function() {
-            app.main.show(new FilmManager({ collection: films }));
+            app.main.show(new FilmManager({
+                collection: films,
+                model: new Film()
+            }));
             app.details.empty();
         });
 
