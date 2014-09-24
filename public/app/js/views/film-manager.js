@@ -43,7 +43,7 @@ define([
 
             this.collection.create({
                 name: this.model.get("name"),
-                year: this.model.get("year")
+                year: '(' + this.model.get("year") + ')'
             }, { wait: true });
 
             this.clearFilmInputs();
