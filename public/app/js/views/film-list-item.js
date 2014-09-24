@@ -11,6 +11,7 @@ define([
         ui: {
             deleteButton:  '.delete-button',
             renameButton:  '.rename-button',
+            undoButton:    '.undo-button',
             filmNameLabel: '.film-name-label',
             filmDetails:   '.film-details',
             filmItem:      '.film-item'
@@ -19,6 +20,7 @@ define([
         events: {
             'click @ui.deleteButton':     'deleteFilm',
             'click @ui.renameButton':     'activateEditor',
+            'click @ui.undoButton':       'undoChanges',
             'keypress @ui.filmNameLabel': 'deactivateEditor'
         },
 
@@ -26,6 +28,10 @@ define([
             Highlighter: {
                 behaviorClass: Behaviors.Highlighter
             }
+        },
+
+        initialize: function() {
+            this.on("hide:undo", this.hideUndoButton);
         },
 
         deleteFilm: function() {
@@ -66,13 +72,23 @@ define([
                 this.ui.filmDetails.show();
 
                 if (this.model.get("name") != filmName) {
-                    this.updateFilm(this.model, { name: filmName });
+                    this.model.store();
+                    this.model.save({ name: filmName });
                 }
             }
         },
 
-        updateFilm: function(film, attributes) {
-            film.save(attributes);
+        undoChanges: function() {
+            this.model.restore();
+            if (_.isEmpty(this.model.changed)) {
+                this.trigger("hide:undo");
+                return false;
+            }
+            this.model.save();
+        },
+
+        hideUndoButton:function() {
+            this.ui.undoButton.hide();
         }
     });
 
