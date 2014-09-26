@@ -24,6 +24,10 @@ define([
             'keypress @ui.filmNameLabel': 'deactivateEditor'
         },
 
+        modelEvents: {
+            'change': 'modelChanged'
+        },
+
         behaviors: {
             Highlighter: {
                 behaviorClass: Behaviors.Highlighter
@@ -81,14 +85,18 @@ define([
         undoChanges: function() {
             this.model.restore();
             if (_.isEmpty(this.model.changed)) {
-                this.trigger("hide:undo");
+                this.ui.undoButton.hide();
                 return false;
             }
             this.model.save();
         },
 
-        hideUndoButton:function() {
-            this.ui.undoButton.hide();
+        modelChanged: function() {
+            this.render();
+            if (!_.isEmpty(this.model.changed)) {
+                this.ui.undoButton.show();
+                return false;
+            }
         }
     });
 

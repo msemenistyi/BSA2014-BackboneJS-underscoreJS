@@ -22,26 +22,28 @@ define([
     });
 
     app.vent.on('films:show', function () {
-        films.on('sync', function() {
-            app.main.show(new FilmManager({
-                collection: films,
-                model: new Film()
-            }));
-            app.details.empty();
+        films.fetch({
+            success: function() {
+                app.main.show(new FilmManager({
+                    collection: films,
+                    model: new Film()
+                }));
+                app.details.empty();
+            }
         });
-
-        films.fetch();
     });
 
     app.vent.on('film:details', function (filmID) {
         var film = new Film;
         film.url = config.apiEndpoint + "filmdetails/" + filmID;
-        film.on('sync', function() {
-            app.main.empty();
-            app.details.show(new FilmDetailsView({ model: film }));
-        });
 
-        film.fetch({ cache: true });
+        film.fetch({
+            success: function() {
+                app.main.empty();
+                app.details.show(new FilmDetailsView({ model: film }));
+            },
+            cache: true
+        });
     });
 
     return window.app = app;
