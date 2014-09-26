@@ -20,7 +20,8 @@ module.exports = function(grunt) {
                     findNestedDependencies: true,
                     fileExclusionRegExp: /^\./,
                     out: "build/js/app.build.js",
-                    name: 'main'
+                    name: 'main',
+                    wrapShim: true // for manage non-AMD plugins deps
                 }
             }
         },

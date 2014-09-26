@@ -8,6 +8,34 @@ require.config({
         fetchcache: 'libs/backbone.fetch-cache',
         memento:    'libs/backbone.memento',
         validation: 'libs/backbone-validation-amd'
+    },
+    shim: {
+        'jquery': {
+            exports: '$'
+        },
+
+        'underscore': {
+            exports: '_'
+        },
+
+        'backbone': {
+            deps: ['underscore', 'jquery'],
+            exports: 'Backbone'
+        },
+
+        'marionette': {
+            deps: ['backbone'],
+            exports: 'Marionette'
+        },
+
+        'fetchcache': {
+            deps: ['backbone']
+        },
+
+        'memento': {
+            deps: ['backbone'],
+            exports: 'Backbone.Memento'
+        }
     }
 });
 
