@@ -1,5 +1,9 @@
-define(['underscore', 'backbone', 'memento'], function(_, Backbone) {
-    var FilmModel = Backbone.Model.extend({
+define([
+    'underscore',
+    'backbone',
+    'thorax'
+], function(_, Backbone, Thorax) {
+    var FilmModel = Thorax.Model.extend({
         defaults: {
             name: null,
             year: null,
@@ -15,10 +19,6 @@ define(['underscore', 'backbone', 'memento'], function(_, Backbone) {
                 required: true,
                 range: [1895, new Date().getFullYear()]
             }
-        },
-
-        initialize: function() {
-            _.extend(this, new Backbone.Memento(this));
         }
     });
 

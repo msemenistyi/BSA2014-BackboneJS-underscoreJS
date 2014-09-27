@@ -1,50 +1,15 @@
 define([
-    'marionette',
-    'collections/films',
-    'models/film',
-    'views/header',
-    'views/film-manager',
-    'views/film-details',
+    'jquery',
+    'underscore',
+    'backbone',
+    'router',
     'config'
-], function(Marionette, Films, Film, Header, FilmManager, FilmDetailsView, config) {
-    var app = new Marionette.Application();
+], function($, _, Backbone, Router, config) {
+    var start = function() {
+        Router.initialize(config);
+    };
 
-    var films = new Films({ filmsUrl: config.apiEndpoint + "films" });
-
-    app.addRegions({
-        header:  '#header',
-        main:    '#main',
-        details: '#details'
-    });
-
-    app.addInitializer(function() {
-        app.header.show(new Header());
-    });
-
-    app.vent.on('films:show', function () {
-        films.fetch({
-            success: function() {
-                app.main.show(new FilmManager({
-                    collection: films,
-                    model: new Film()
-                }));
-                app.details.empty();
-            }
-        });
-    });
-
-    app.vent.on('film:details', function (filmID) {
-        var film = new Film;
-        film.url = config.apiEndpoint + "filmdetails/" + filmID;
-
-        film.fetch({
-            success: function() {
-                app.main.empty();
-                app.details.show(new FilmDetailsView({ model: film }));
-            },
-            cache: true
-        });
-    });
-
-    return window.app = app;
+    return {
+        start: start
+    };
 });

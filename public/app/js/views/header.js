@@ -1,11 +1,11 @@
 define([
-    'underscore',
-    'marionette',
-    'text!templates/header.html'
-], function(_, Marionette, template) {
-    var Header = Marionette.ItemView.extend({
-        className: 'container',
-        template: _.template(template)
+    'thorax',
+    'handlebars',
+    'text!templates/header.handlebars'
+], function(Thorax, Handlebars, template) {
+    var Header = Thorax.View.extend({
+        name:     "header",
+        template: Handlebars.compile(template)
     });
 
     return Header;

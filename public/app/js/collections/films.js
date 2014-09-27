@@ -1,9 +1,10 @@
 define([
     'underscore',
     'backbone',
+    'thorax',
     'models/film'
-], function(_, Backbone, FilmModel) {
-    var FilmsCollection = Backbone.Collection.extend({
+], function(_, Backbone, Thorax, FilmModel) {
+    var FilmsCollection = Thorax.Collection.extend({
         model: FilmModel,
 
         initialize: function(options) {

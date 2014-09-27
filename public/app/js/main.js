@@ -3,8 +3,9 @@ require.config({
         jquery:     'libs/jquery-2.1.1',
         underscore: 'libs/underscore',
         backbone:   'libs/backbone',
+        handlebars: 'libs/handlebars-v2.0.0',
+        thorax:     'libs/thorax',
         text:       'libs/text',
-        marionette: 'libs/backbone.marionette',
         fetchcache: 'libs/backbone.fetch-cache',
         memento:    'libs/backbone.memento',
         validation: 'libs/backbone-validation-amd'
@@ -23,9 +24,9 @@ require.config({
             exports: 'Backbone'
         },
 
-        'marionette': {
-            deps: ['backbone'],
-            exports: 'Marionette'
+        'thorax': {
+            deps: ['handlebars'],
+            exports: 'Thorax'
         },
 
         'fetchcache': {
@@ -39,18 +40,8 @@ require.config({
     }
 });
 
-require([
-    'app',
-    'backbone',
-    'router',
-    'controllers/film',
-    'fetchcache'
-], function(App, Backbone, Router, Controller) {
+require(['app'], function(App) {
     App.start();
-
-    new Router({ controller : Controller });
-
-    Backbone.history.start();
 
     console.log("App started");
 });

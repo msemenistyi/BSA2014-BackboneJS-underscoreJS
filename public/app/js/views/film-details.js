@@ -1,9 +1,16 @@
 define([
-    'marionette',
-    'text!templates/film-detailed-view.html'
-], function(Marionette, template) {
-    var FilmDetailsView = Marionette.ItemView.extend({
-        template: _.template(template)
+    'thorax',
+    'handlebars',
+    'text!templates/film-detailed-view.handlebars'
+], function(Thorax, Handlebars, template) {
+    var FilmDetailsView = Thorax.View.extend({
+        name:     'details',
+        template: Handlebars.compile(template),
+
+        initialize: function(options) {
+            this.model = options.model;
+            this.render();
+        }
     });
 
     return FilmDetailsView;
