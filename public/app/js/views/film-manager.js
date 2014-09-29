@@ -49,17 +49,17 @@ define([
                 year = parseInt(this.$el.find("#film-year-input").val(), 10);
 
             var result = {
-                name: name,
+                name: name.replace(/^\s+/, '').replace(/\s+$/, ''),
                 year: year,
                 errors: []
             };
 
-            if (!name.length) {
+            if (!result.name.length) {
                 result.errors.push("Film's name should be not empty");
             }
 
-            if (!(year >= this.validationRules.year.min
-                && year <= this.validationRules.year.max)) {
+            if (!(result.year >= this.validationRules.year.min
+                && result.year <= this.validationRules.year.max)) {
                 var yearErrorMessage = "Film's year should be in range (" +
                     this.validationRules.year.min +
                     ".." +
