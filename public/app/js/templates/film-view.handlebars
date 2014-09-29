@@ -1,0 +1,14 @@
+<div class="col-md-8">
+    <div class="well well-sm film-item" id="film-item-{{ id }}">
+        <span class="film-name-label">{{ name }}</span>
+        <span class="film-year-label">{{ year }}</span>
+        <span class="film-details pull-right">
+            <a href="#/details/{{ id }}" class="">Details</a>
+        </span>
+    </div>
+</div>
+<div class="col-md-4">
+    <button class="btn btn-primary rename-button" data-id="{{ id }}">Rename</button>
+    <button class="btn btn-default undo-button" style="display: none;" data-id="{{ id }}">Undo</button>
+    <button class="btn btn-info delete-button" data-id="{{ id }}">Delete</button>
+</div>

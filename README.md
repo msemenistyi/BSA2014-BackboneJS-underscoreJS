@@ -39,3 +39,7 @@ Add implies inputs for name and year, id may be generated automatically.
 On item click, view should be changed to display film details with 'back to the list' button. 
 Routing should work so that copying link and openning in new tab should open the same view you are in.
 
+###UPD.
+Changed server's code in order to handle POST requests and assigning ids
+if there is no data in server's storage.
+
