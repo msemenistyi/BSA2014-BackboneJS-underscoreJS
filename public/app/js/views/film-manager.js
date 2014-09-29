@@ -7,53 +7,74 @@ define([
     'text!templates/film-manager.handlebars',
     'text!templates/film-view.handlebars',
     'text!templates/no-film-view.handlebars'
-], function(_, Thorax, Handlebars, FilmView, EmptyFilmView, template, filmTemplate, emptyFilmTemplate) {
+], function(_, Thorax, Handlebars, FilmView, EmptyFilmView, template) {
     var FilmManager = Thorax.View.extend({
         name:     "film-manager",
         template: Handlebars.compile(template),
 
-       /* ui: {
-            addFilmButton: "#add-film-button",
-            filmName     : "#film-name-input",
-            filmYear     : "#film-year-input",
-            alertBlock   : ".alert",
-            filmsList    : "#films-list"
+        events: {
+            'click #add-film-button': 'addFilm'
         },
 
-        events: {
-            'click @ui.addFilmButton': 'addFilm'
-        },*/
+        validationRules: {
+            year: {
+                min: 1895, // first Lumier brothers' film
+                max: new Date().getFullYear()
+            }
+        },
 
         initialize: function(options) {
             this.collection = options.collection;
             this.render();
-        }
+        },
 
-        /*addFilm: function() {
-            this.model.set({
-                name: this.ui.filmName.val(),
-                year: this.ui.filmYear.val()
-            });
+        addFilm: function() {
+            var filmData = this.validateNewFilm();
 
-            var result = this.model.validate();
-
-            if (result) {
-                alert(_.values(result).join("\n"));
-                return false;
+            if (filmData.errors.length) {
+                alert(filmData.errors.join("\n"));
+                return;
             }
 
             this.collection.create({
-                name: this.model.get("name"),
-                year: '(' + this.model.get("year") + ')'
+                name: filmData.name,
+                year: '(' + filmData.year + ')'
             }, { wait: true });
 
             this.clearFilmInputs();
         },
 
+        validateNewFilm: function() {
+            var name = this.$el.find("#film-name-input").val(),
+                year = parseInt(this.$el.find("#film-year-input").val(), 10);
+
+            var result = {
+                name: name,
+                year: year,
+                errors: []
+            };
+
+            if (!name.length) {
+                result.errors.push("Film's name should be not empty");
+            }
+
+            if (!(year >= this.validationRules.year.min
+                && year <= this.validationRules.year.max)) {
+                var yearErrorMessage = "Film's year should be in range (" +
+                    this.validationRules.year.min +
+                    ".." +
+                    this.validationRules.year.max +
+                    ")";
+                result.errors.push(yearErrorMessage);
+            }
+
+            return result;
+        },
+
         clearFilmInputs: function() {
-            this.ui.filmName.val('');
-            this.ui.filmYear.val('');
-        }*/
+            this.$el.find("#film-name-input").val('');
+            this.$el.find("#film-year-input").val('');
+        }
     });
 
     return FilmManager;
