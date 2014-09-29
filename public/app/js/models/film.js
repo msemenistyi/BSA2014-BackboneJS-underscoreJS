@@ -1,8 +1,8 @@
 define([
     'underscore',
-    'backbone',
-    'thorax'
-], function(_, Backbone, Thorax) {
+    'thorax',
+    'memento'
+], function(_, Thorax, Memento) {
     var FilmModel = Thorax.Model.extend({
         defaults: {
             name: null,
@@ -19,6 +19,10 @@ define([
                 required: true,
                 range: [1895, new Date().getFullYear()]
             }
+        },
+
+        initialize: function() {
+            _.extend(this, new Memento(this));
         }
     });
 

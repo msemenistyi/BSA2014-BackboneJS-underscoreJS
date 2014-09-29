@@ -9,28 +9,23 @@ define([
         name: 'film-item',
         template: Handlebars.compile(template),
 
-        /*ui: {
-            deleteButton:  '.delete-button',
-            renameButton:  '.rename-button',
-            undoButton:    '.undo-button',
-            filmNameLabel: '.film-name-label',
-            filmDetails:   '.film-details',
-            filmItem:      '.film-item'
-        },
-
         events: {
-            'click @ui.deleteButton':     'deleteFilm',
-            'click @ui.renameButton':     'activateEditor',
-            'click @ui.undoButton':       'undoChanges',
-            'keypress @ui.filmNameLabel': 'deactivateEditor'
-        },*/
+            'click .delete-button':      'deleteFilm',
+            'click .rename-button':      'activateEditor',
+            'click .undo-button':        'undoChanges',
+            'keypress .film-name-label': 'deactivateEditor',
+
+            model: {
+                change: "modelChanged"
+            }
+        },
 
         initialize: function(options) {
             this.model = options.model;
             this.render();
-        }
+        },
 
-        /*deleteFilm: function() {
+        deleteFilm: function() {
             if (!confirm("Delete this film")) {
                 return false;
             } else {
@@ -41,7 +36,7 @@ define([
 
         activateEditor: function() {
             var filmID       = this.model.get("id"),
-                filmNameSpan = this.ui.filmNameLabel,
+                filmNameSpan = this.$el.find(".film-name-label"),
                 $input       = $("<input>", {
                     val:     filmNameSpan.text(),
                     type:    "text",
@@ -52,7 +47,7 @@ define([
             $input.addClass("film-name-label");
             $(filmNameSpan).replaceWith($input);
             $input.select();
-            this.ui.filmDetails.hide();
+            this.$el.find(".film-details").hide();
         },
 
         deactivateEditor: function(e) {
@@ -65,7 +60,7 @@ define([
 
                 $span.addClass("film-name-label");
                 filmInput.replaceWith($span);
-                this.ui.filmDetails.show();
+                this.$el.find(".film-details").show();
 
                 if (this.model.get("name") != filmName) {
                     this.model.store();
@@ -77,19 +72,17 @@ define([
         undoChanges: function() {
             this.model.restore();
             if (_.isEmpty(this.model.changed)) {
-                this.ui.undoButton.hide();
-                return false;
+                this.$el.find('.undo-button').hide();
+                this.model.save();
             }
-            this.model.save();
         },
 
         modelChanged: function() {
-            this.render();
             if (!_.isEmpty(this.model.changed)) {
-                this.ui.undoButton.show();
-                return false;
+                this.$el.find('.undo-button').show();
+                this.model.save();
             }
-        }*/
+        }
     });
 
     return FilmView;
