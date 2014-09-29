@@ -5,8 +5,9 @@ define([
     'collections/films',
     'models/film',
     'views/header',
-    'views/film-details'
-], function($, _, Backbone, Films, Film, Header, FilmDetailsView) {
+    'views/film-details',
+    'views/film-manager'
+], function($, _, Backbone, Films, Film, Header, FilmDetailsView, FilmManager) {
     var AppRouter = Backbone.Router.extend({
         routes: {
             "details/:id": "showFilmDetails",
@@ -39,8 +40,21 @@ define([
         });
 
         router.on("route:showFilmsList", function() {
-            $(regions.main).empty();
-            $(regions.details).empty();
+            var films = new Films({
+                filmsUrl: config.apiEndpoint + "films"
+            });
+
+            films.fetch({
+                success: function(collection) {
+                    $(regions.main).empty();
+                    $(regions.details).empty();
+
+                    var filmManager = new FilmManager({
+                        collection: collection
+                    });
+                    filmManager.appendTo(regions.main);
+                }
+            });
         });
 
         var header = new Header();

@@ -1,12 +1,11 @@
 define([
-    'underscore',
-    'marionette',
-    'text!templates/no-film-view.html'
-], function(_, Marionette, template) {
-    var FilmsEmptyListView = Marionette.ItemView.extend({
-        template: _.template(template),
-        className: "row",
-        tagName: "div"
+    'thorax',
+    'handlebars',
+    'text!templates/no-film-view.handlebars'
+], function(Thorax, Handlebars, template) {
+    var FilmsEmptyListView = Thorax.View.extend({
+        name: 'empty-list',
+        template: Handlebars.compile(template)
     });
 
     return FilmsEmptyListView;

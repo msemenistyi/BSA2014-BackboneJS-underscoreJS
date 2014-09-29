@@ -1,18 +1,18 @@
 define([
     'underscore',
-    'marionette',
-    'validation',
+    'thorax',
+    'handlebars',
     'views/film-list-item',
     'views/films-empty-list',
-    'text!templates/film-manager.html'
-], function(_, Marionette, BackboneValidation, FilmView, FilmsEmptyListView, template) {
-    var FilmManager = Marionette.CompositeView.extend({
-        template:           _.template(template),
-        childView:          FilmView,
-        emptyView:          FilmsEmptyListView,
-        childViewContainer: '#films-list',
+    'text!templates/film-manager.handlebars',
+    'text!templates/film-view.handlebars',
+    'text!templates/no-film-view.handlebars'
+], function(_, Thorax, Handlebars, FilmView, EmptyFilmView, template, filmTemplate, emptyFilmTemplate) {
+    var FilmManager = Thorax.View.extend({
+        name:     "film-manager",
+        template: Handlebars.compile(template),
 
-        ui: {
+       /* ui: {
             addFilmButton: "#add-film-button",
             filmName     : "#film-name-input",
             filmYear     : "#film-year-input",
@@ -22,13 +22,14 @@ define([
 
         events: {
             'click @ui.addFilmButton': 'addFilm'
-        },
+        },*/
 
-        initialize: function() {
-            Backbone.Validation.bind(this);
-        },
+        initialize: function(options) {
+            this.collection = options.collection;
+            this.render();
+        }
 
-        addFilm: function() {
+        /*addFilm: function() {
             this.model.set({
                 name: this.ui.filmName.val(),
                 year: this.ui.filmYear.val()
@@ -52,7 +53,7 @@ define([
         clearFilmInputs: function() {
             this.ui.filmName.val('');
             this.ui.filmYear.val('');
-        }
+        }*/
     });
 
     return FilmManager;

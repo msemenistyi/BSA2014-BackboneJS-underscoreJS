@@ -1,14 +1,15 @@
 define([
     'jquery',
     'underscore',
-    'marionette',
-    'behaviors/behaviors',
-    'text!templates/film-view.html'
-], function($, _, Marionette, Behaviors, template) {
-    var FilmView = Marionette.ItemView.extend({
-        template: _.template(template),
+    'thorax',
+    'handlebars',
+    'text!templates/film-view.handlebars'
+], function($, _, Thorax, Handlebars, template) {
+    var FilmView = Thorax.View.extend({
+        name: 'film-item',
+        template: Handlebars.compile(template),
 
-        ui: {
+        /*ui: {
             deleteButton:  '.delete-button',
             renameButton:  '.rename-button',
             undoButton:    '.undo-button',
@@ -22,23 +23,14 @@ define([
             'click @ui.renameButton':     'activateEditor',
             'click @ui.undoButton':       'undoChanges',
             'keypress @ui.filmNameLabel': 'deactivateEditor'
-        },
+        },*/
 
-        modelEvents: {
-            'change': 'modelChanged'
-        },
+        initialize: function(options) {
+            this.model = options.model;
+            this.render();
+        }
 
-        behaviors: {
-            Highlighter: {
-                behaviorClass: Behaviors.Highlighter
-            }
-        },
-
-        initialize: function() {
-            this.on("hide:undo", this.hideUndoButton);
-        },
-
-        deleteFilm: function() {
+        /*deleteFilm: function() {
             if (!confirm("Delete this film")) {
                 return false;
             } else {
@@ -97,7 +89,7 @@ define([
                 this.ui.undoButton.show();
                 return false;
             }
-        }
+        }*/
     });
 
     return FilmView;
